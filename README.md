@@ -3,7 +3,7 @@
 It can either be called as a shell command or as an
 embedded Erlang function. Warnings are printed to the
 terminal. It is possible to suppress certain warnings
-as will as explicitly mark functions to be ignored by
+at will by explicitly mark functions to be ignored by
 *exrefcheck*.
 
 Here is an example of how to call exrefcheck from the command line:
@@ -19,4 +19,9 @@ then from the command line:
 
     make xref
 
+To make *exrefcheck* ignore functions, add the *ignore_xref* module attribute, as:
+
+    -ignore_xref([{foo,1}, {bar,2}, ...]).
+
+This is especially useful when your module is exporting a library API.
 
