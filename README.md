@@ -6,7 +6,17 @@ terminal. It is possible to suppress certain warnings
 as will as explicitly mark functions to be ignored by
 *exrefcheck*.
 
-Here is an example of how to call exrefcheck
+Here is an example of how to call exrefcheck from the command line:
 
     ./exrefcheck.sh -exrefcheck ebin_dirs '"/home/tobbe/git/bon/ebin:/home/tobbe/git/nitrogen/ebin"' 
+
+Another example, using a Makefile target looking like:
+
+    xref:
+            (export XREFCHECK_EBIN_DIRS=`pwd`/ebin; $(EXREFCHECK_DIR)/exrefcheck.sh)
+
+then from the command line:
+
+    make xref
+
 
