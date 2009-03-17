@@ -53,7 +53,10 @@ get_code_path() ->
         [], get_param(code_path_dirs, "XREFCHECK_CODE_PATH_DIRS")) ++ CP1.
 
 get_opts() -> 
-  get_param(opts, "XREFCHECK_OPTS").
+  case proplists:get_value( noshell, init:get_arguments() ) of
+    undefined -> get_param(opts, "XREFCHECK_OPTS");
+    []        -> [noshell | get_param(opts, "XREFCHECK_OPTS")]
+  end.
 
 
 test() ->
@@ -78,7 +81,7 @@ test(EbinPaths, CodePaths, Opts) ->
     Undef           = undefined_functions(),
     xref:stop(?XREF),
     case Exports ++ Mods ++ Locals ++ Undef of
-      []   -> halt_0();
+      []   -> halt_0(Opts);
       List ->
         io:format("~s", [List]),
         halt_1()
@@ -89,9 +92,11 @@ test(EbinPaths, CodePaths, Opts) ->
       halt_1()
   end.
 
-halt_0() ->
-  %%halt(0).
-  true.
+halt_0(Opts) ->
+  case lists:member( noshell, Opts ) of
+    true  -> halt(0);
+    false -> true
+  end.
 
 halt_1() ->
   io:format("~nWARNING! Consider to fix the above errors or use:~n~n"
